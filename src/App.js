@@ -8,9 +8,13 @@ import ContactForm from './ContactForm';
 function App() {
   return (
     <div className="App">
-     <Navbar/>
-      <HeroCarousel />
-      <ContactForm />
+      <Navbar />
+      <div id="home">
+        <HeroCarousel />
+      </div>
+      <div id="contact">
+        <ContactForm />
+      </div>
     </div>
   );
 }
