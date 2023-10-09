@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Modal from 'react-modal';
 import './ContactForm.css';
 
 const ContactForm = () => {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -34,6 +34,31 @@ const ContactForm = () => {
     },
   });
 
+  const getButtonText = () => {
+    if (Object.keys(formik.errors).length === 0) {
+      return 'Submit';
+    } else {
+     
+      if (formik.touched.firstName && formik.errors.firstName) {
+        return 'First Name is required';
+      } else if (formik.touched.lastName && formik.errors.lastName) {
+        return 'Last Name is required';
+      } else if (formik.touched.email && formik.errors.email) {
+        return 'Email is required';
+      } else if (formik.touched.contactNumber && formik.errors.contactNumber) {
+        return 'Contact Number is required';
+      } else if (formik.touched.gender && formik.errors.gender) {
+        return 'Gender is required';
+      } else if (formik.touched.country && formik.errors.country) {
+        return 'Country is required';
+      } else if (formik.touched.message && formik.errors.message) {
+        return 'Message is required';
+      } else {
+        return 'Please fill out all required fields';
+      }
+    }
+  };
+
   return (
     <div>
       <div className="center-text">
@@ -60,9 +85,6 @@ const ContactForm = () => {
                   placeholder="Enter your name here"
                   {...formik.getFieldProps('firstName')}
                 />
-                {formik.touched.firstName && formik.errors.firstName ? (
-                  <div className="error">{formik.errors.firstName}</div>
-                ) : null}
               </td>
               <td>
                 <input
@@ -72,9 +94,6 @@ const ContactForm = () => {
                   placeholder="Enter your name here"
                   {...formik.getFieldProps('lastName')}
                 />
-                {formik.touched.lastName && formik.errors.lastName ? (
-                  <div className="error">{formik.errors.lastName}</div>
-                ) : null}
               </td>
             </tr>
 
@@ -95,9 +114,6 @@ const ContactForm = () => {
                   placeholder="Enter your email here"
                   {...formik.getFieldProps('email')}
                 />
-                {formik.touched.email && formik.errors.email ? (
-                  <div className="error">{formik.errors.email}</div>
-                ) : null}
               </td>
               <td>
                 <input
@@ -107,9 +123,6 @@ const ContactForm = () => {
                   placeholder="Enter your number here"
                   {...formik.getFieldProps('contactNumber')}
                 />
-                {formik.touched.contactNumber && formik.errors.contactNumber ? (
-                  <div className="error">{formik.errors.contactNumber}</div>
-                ) : null}
               </td>
             </tr>
 
@@ -143,9 +156,6 @@ const ContactForm = () => {
                   />
                   <label htmlFor="female">Female</label>
                 </div>
-                {formik.touched.gender && formik.errors.gender ? (
-                  <div className="error">{formik.errors.gender}</div>
-                ) : null}
               </td>
               <td>
                 <input
@@ -155,9 +165,6 @@ const ContactForm = () => {
                   placeholder="Enter your country here"
                   {...formik.getFieldProps('country')}
                 />
-                {formik.touched.country && formik.errors.country ? (
-                  <div className="error">{formik.errors.country}</div>
-                ) : null}
               </td>
             </tr>
 
@@ -174,18 +181,16 @@ const ContactForm = () => {
                   placeholder="Tell us about you"
                   {...formik.getFieldProps('message')}
                 />
-                {formik.touched.message && formik.errors.message ? (
-                  <div className="error">{formik.errors.message}</div>
-                ) : null}
               </td>
             </tr>
             <tr>
-            <button type="submit">Submit</button>
+              <td colSpan="2">
+                
+            <button type="submit">{getButtonText()}</button>
+              </td>
             </tr>
           </tbody>
         </table>
-
-        
       </form>
 
       <Modal
